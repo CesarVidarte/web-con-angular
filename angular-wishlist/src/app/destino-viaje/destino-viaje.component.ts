@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostBinding, EventEmitter, Output} from '@angular/core';
 import { DestinoViaje } from "./../models/destino-viaje.model";
 
+
 @Component({
   selector: 'app-destino-viaje',
   templateUrl: './destino-viaje.component.html',

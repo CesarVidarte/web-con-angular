@@ -8,10 +8,12 @@
         <div *ngIf="fg.controls['nombre'].hasError('required')"
 				class="alert alert-danger" role="alert">
 			nombre es obligatorio!
-		</div>
+    </div>
+    <!--
 		<div *ngIf="fg.controls['nombre'].hasError('invalidNombre')">
 			el nombre debe tener menos de {{maxLongitud}} carácteres!
-		</div>
+    </div>
+    -->
 		<div *ngIf="fg.controls['nombre'].hasError('minLongNombre')">
 			el nombre debe tener al menos {{ minLongitud }} carácteres!
 		</div>

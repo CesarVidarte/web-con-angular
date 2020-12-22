@@ -49,7 +49,7 @@ export class FormDestinoViajeComponent implements OnInit {
 
   nombreValidator(control: FormControl): { [s: string]: boolean } {
     let l = control.value.toString().trim().length;
-    if (l > 5) {
+    if (l > 20) {
       return {invalidNombre: true};
     }
       return null;

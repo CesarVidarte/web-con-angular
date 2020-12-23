@@ -23,7 +23,9 @@ export const initializeDestinosViajeState = function () {
 //ACCIONES
 export enum DestinosViajesActionTypes {
     NUEVO_DESTINO = '[Destinos Viajes] Nuevo',
-    ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito'
+    ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito',
+    VOTE_UP= '[Destinos Viajes] Vote Up',
+    VOTE_DOWN= '[Destinos Viajes] Vote DOWN'
 }
 
 export class NuevoDestinoAction implements Action {
@@ -35,8 +37,17 @@ export class ElegidoFavoritoAction implements Action {
     type = DestinosViajesActionTypes.ELEGIDO_FAVORITO;
     constructor(public destino: DestinoViaje) { }
 }
-
-export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction;
+export class VoteUpAction implements Action {
+    type = DestinosViajesActionTypes.VOTE_UP;
+    constructor(public destino: DestinoViaje) { }
+}
+export class VoteDownAction implements Action {
+    type = DestinosViajesActionTypes.VOTE_DOWN;
+    constructor(public destino: DestinoViaje) { }
+}
+//conjunto de tipos de dato
+export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction
+    | VoteUpAction | VoteDownAction;
 
 //REDUCERS
 export function reducerDestinosViajes(
@@ -51,10 +62,40 @@ export function reducerDestinosViajes(
             };
         }
         case DestinosViajesActionTypes.ELEGIDO_FAVORITO: {
+            //
+            //state.items.forEach(x => x.setSelected(false));
             const fav: DestinoViaje = (action as ElegidoFavoritoAction).destino;
+            //fav.setSelected(true);
             return {
                 ...state,
                 favorito: fav
+            };
+        }
+        case DestinosViajesActionTypes.VOTE_UP: {
+            const d: DestinoViaje = (action as VoteUpAction).destino;
+            //d.voteUp();
+            var dcopy = new DestinoViaje(d.nombre, d.imagenUrl, d.votes); 
+            dcopy.voteUp();
+            return {
+                ...state,
+                items: [ ...state.items.map(dest => {
+                    if (dest == d) {
+                        return dcopy;
+                    } 
+                }) ]
+            };
+        }
+        case DestinosViajesActionTypes.VOTE_DOWN: {
+            const d: DestinoViaje = (action as VoteDownAction).destino;
+            var dcopy = new DestinoViaje(d.nombre, d.imagenUrl, d.votes);
+            dcopy.voteDown();
+            return {
+                ...state,
+                items: [ ...state.items.map(dest => {
+                    if (dest == d) {
+                        return dcopy;
+                    } 
+                }) ]
             };
         }
     }

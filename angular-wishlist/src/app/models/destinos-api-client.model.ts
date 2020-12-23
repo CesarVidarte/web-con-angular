@@ -1,27 +1,44 @@
-import { BehaviorSubject, Subject } from 'rxjs';
 import { DestinoViaje } from './destino-viaje.model';
+import { Observable } from 'rxjs';
+import { ElegidoFavoritoAction, NuevoDestinoAction } from './destinos-viajes-state.model';
+import { Store } from '@ngrx/store';
+import { Appstate } from '../app.module';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class DestinosApiClient {
-	destinos:DestinoViaje[];
-	current: Subject<DestinoViaje> = new BehaviorSubject<DestinoViaje>(null);
-	constructor() {
-       this.destinos = [];
+	destinos:DestinoViaje[]=[];
+
+	constructor(private store: Store<Appstate>) {
+		this.store
+			.select(state => state.destinos)
+			.subscribe((data) => {
+				console.log("destinos sub store");
+				console.log(data);
+				this.destinos = data.items;
+			});
+		this.store
+			.subscribe((data) => {
+				console.log("all store");
+				console.log(data);
+			});
 	}
-	add(d: DestinoViaje){
-	  this.destinos.push(d);
+	
+	add(d:DestinoViaje){
+	  //aqui incovariamos al servidor
+	  this.store.dispatch(new NuevoDestinoAction(d));
 	}
-	getAll(): DestinoViaje[]{
-	  return this.destinos;
-    }
-	getById(id: String): DestinoViaje{
+	getById(id:String):DestinoViaje{
 	  return this.destinos.filter(function(d){return d.id.toString() == id;})[0];
+    }
+    getAll():DestinoViaje[] {
+    	return this.destinos;
+    }
+    elegir(d:DestinoViaje){
+	  //aqui incovariamos al servidor
+	  this.store.dispatch(new ElegidoFavoritoAction(d));
 	}
-	elegir(d: DestinoViaje){
-		this.destinos.forEach(x => x.setSelected(false));
-		d.setSelected(true);
-		this.current.next(d);
-	}
-	subscribeOnChange(fn){
-		this.current.subscribe(fn);
+	isSelected(destino: DestinoViaje): Observable<boolean> {
+		return this.store.select<boolean>((state: Appstate) => state.destinos.favorito == destino);
 	}
 }

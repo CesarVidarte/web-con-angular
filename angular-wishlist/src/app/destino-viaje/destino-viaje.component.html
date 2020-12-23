@@ -17,7 +17,7 @@
        </li>
       </ul>
       <a href="#" class="btn-card" (click)="ir()">Ir</a>
-      <span *ngIf="destino.isSelected()">
+      <span *ngIf="destinosApiClient.isSelected(destino) | async">
         <span ngNonBindable>{{PREFERIDO}}</span>
       </span>
       <a [routerLink]="['/destino', destino.id]">Ver!</a>

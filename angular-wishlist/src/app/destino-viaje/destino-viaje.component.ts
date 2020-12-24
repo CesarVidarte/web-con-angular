@@ -3,7 +3,7 @@ import { DestinoViaje } from "./../models/destino-viaje.model";
 import { DestinosApiClient } from '../models/destinos-api-client.model';
 import { Store } from '@ngrx/store';
 import { Appstate } from '../app.module';
-import { VoteDownAction, VoteUpAction } from '../models/destinos-viajes-state.model';
+import { VoteDownAction, VoteUpAction, VoteResetAction } from '../models/destinos-viajes-state.model';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class DestinoViajeComponent implements OnInit {
   @HostBinding('attr.class') cssClass= 'col-md-4';
   @Output() clicked: EventEmitter<DestinoViaje>;
 
-  constructor(public destinosApiClient: DestinosApiClient, private store: Store<Appstate>) {
+  constructor(public destinosApiClient: DestinosApiClient, public store: Store<Appstate>) {
     this.clicked = new EventEmitter();
   }
   ngOnInit(): void {
@@ -35,6 +35,11 @@ export class DestinoViajeComponent implements OnInit {
 
   voteDown() {
     this.store.dispatch(new VoteDownAction(this.destino));
+    return false;
+  }
+
+  voteReset() {
+    this.store.dispatch(new VoteResetAction(this.destino));
     return false;
   }
 

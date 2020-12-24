@@ -25,7 +25,8 @@ export enum DestinosViajesActionTypes {
     NUEVO_DESTINO = '[Destinos Viajes] Nuevo',
     ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito',
     VOTE_UP= '[Destinos Viajes] Vote Up',
-    VOTE_DOWN= '[Destinos Viajes] Vote DOWN'
+    VOTE_DOWN= '[Destinos Viajes] Vote DOWN',
+    VOTE_RESET= '[Destinos Viajes] Vote RESET'
 }
 
 export class NuevoDestinoAction implements Action {
@@ -45,9 +46,13 @@ export class VoteDownAction implements Action {
     type = DestinosViajesActionTypes.VOTE_DOWN;
     constructor(public destino: DestinoViaje) { }
 }
+export class VoteResetAction implements Action {
+    type = DestinosViajesActionTypes.VOTE_RESET;
+    constructor(public destino: DestinoViaje) { }
+}
 //conjunto de tipos de dato
 export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction
-    | VoteUpAction | VoteDownAction;
+    | VoteUpAction | VoteDownAction | VoteResetAction;
 
 //REDUCERS
 export function reducerDestinosViajes(
@@ -81,7 +86,7 @@ export function reducerDestinosViajes(
                 items: [ ...state.items.map(dest => {
                     if (dest == d) {
                         return dcopy;
-                    } 
+                    } else {return dest;}
                 }) ]
             };
         }
@@ -94,7 +99,20 @@ export function reducerDestinosViajes(
                 items: [ ...state.items.map(dest => {
                     if (dest == d) {
                         return dcopy;
-                    } 
+                    }  else {return dest;}
+                }) ]
+            };
+        }
+        case DestinosViajesActionTypes.VOTE_RESET: {
+            const d: DestinoViaje = (action as VoteResetAction).destino;
+            var dcopy = new DestinoViaje(d.nombre, d.imagenUrl, d.votes);
+            dcopy.voteReset();
+            return {
+                ...state,
+                items: [ ...state.items.map(dest => {
+                    if (dest == d) {
+                        return dcopy;
+                    }  else {return dest;}
                 }) ]
             };
         }

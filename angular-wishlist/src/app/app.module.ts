@@ -10,7 +10,7 @@ import { Route } from '@angular/compiler/src/core';
 import { DestinoDetalleComponent } from './components/destino-detalle/destino-detalle.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormDestinoViajeComponent } from './components/form-destino-viaje/form-destino-viaje.component';
-import { DestinosApiClient } from "./models/destinos-api-client.model";
+//import { DestinosApiClient } from "./models/destinos-api-client.model";
 import { DestinosViajesState, reducerDestinosViajes, initializeDestinosViajeState, DestinosViajesEffects } from './models/destinos-viajes-state.model';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { LoginComponent } from './components/login/login/login.component';
@@ -85,7 +85,7 @@ const reducersInitialState = {
     ReservasModule
   ],
   providers: [
-    DestinosApiClient,
+    //DestinosApiClient,
     AuthService,
     UsuarioLogueadoGuard
   ],

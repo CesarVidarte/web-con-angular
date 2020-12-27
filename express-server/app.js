@@ -5,8 +5,9 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 app.listen(3000, () => console.log("Server running on port 3000"));
-//app.get("/ciudades", (req, res, next) => res.json(ciudades.filter((c)=> c.toLowerCase().indexOf(req.query.q.toString().toLowerCase()) > -1)));
-app.get("/ciudades", (req, res, next) => res.json([ "Cali", "Medellín", "Bogotá", "Cartagena", "Santa Marta", "Sen Andrés", "Barranquilla" ]) );
+var ciudades =[ "Cali", "Medellín", "Bogotá", "Cartagena", "Santa Marta", "San Andrés", "Barranquilla" ];
+app.get("/ciudades", (req, res, next) => res.json(ciudades.filter((c)=> c.toLowerCase().indexOf(req.query.q.toString().toLowerCase()) > -1)));
+//app.get("/ciudades", (req, res, next) => res.json([ "Cali", "Medellín", "Bogotá", "Cartagena", "Santa Marta", "Sen Andrés", "Barranquilla" ]) );
 var misDestinos = [];
 app.get("/my", (req, res, next) => res.json(misDestinos));
 app.post("/my", (req, res, next) => {

@@ -2,14 +2,19 @@ import { DestinoViaje } from './destino-viaje.model';
 import { Observable } from 'rxjs';
 import { ElegidoFavoritoAction, NuevoDestinoAction } from './destinos-viajes-state.model';
 import { Store } from '@ngrx/store';
-import { Appstate } from '../app.module';
-import { Injectable } from '@angular/core';
+import { Appstate, APP_CONFIG, AppConfig } from '../app.module';
+import { Injectable, Inject, forwardRef } from '@angular/core';
+import { HttpRequest, HttpHeaders, HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 
 @Injectable()
 export class DestinosApiClient {
 	destinos:DestinoViaje[]=[];
 
-	constructor(private store: Store<Appstate>) {
+	constructor(
+		private store: Store<Appstate>,
+		@Inject(forwardRef(() => APP_CONFIG)) private config: AppConfig,
+		private http: HttpClient
+	  ) {
 		this.store
 			.select(state => state.destinos)
 			.subscribe((data) => {
@@ -25,8 +30,13 @@ export class DestinosApiClient {
 	}
 	
 	add(d:DestinoViaje){
-	  //aqui incovariamos al servidor
-	  this.store.dispatch(new NuevoDestinoAction(d));
+		const headers: HttpHeaders = new HttpHeaders({'X-API-TOKEN': 'token-seguridad'});
+		const req = new HttpRequest('POST', this.config.apiEndpoint + '/my', { nuevo: d.nombre }, { headers: headers });
+		this.http.request(req).subscribe((data: HttpResponse<{}>) => {
+		  if (data.status === 200) {
+			this.store.dispatch(new NuevoDestinoAction(d));
+		  }
+		});
 	}
 	getById(id:String):DestinoViaje{
 	  return this.destinos.filter(function(d){return d.id.toString() == id;})[0];

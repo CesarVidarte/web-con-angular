@@ -6,28 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 //import { Store } from '@ngrx/store';
 //import { Appstate } from '../../app.module';
 
-
-
-// @Injectable()
-// class DestinosApiClientDecorated extends DestinosApiClient {
-//   constructor(@Inject(APP_CONFIG) private config: AppConfig, store: Store<Appstate>) {
-//     super(store);
-//   }
-//   getById(id: String): DestinoViaje {
-//     console.log('llamando por la clase decorada!');
-//     console.log('config: ' + this.config.apiEndpoint);
-//     return super.getById(id);
-//   }
-// }
-
-// class DestinosApiClientViejo {
-//   getById(id: String): DestinoViaje {
-//     console.log('llamando por la clase vieja!');
-//     return null;
-//   }
-// }
-
-
 @Component({
   selector: 'app-destino-detalle',
   templateUrl: './destino-detalle.component.html',

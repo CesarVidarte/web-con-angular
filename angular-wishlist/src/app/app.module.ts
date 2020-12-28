@@ -27,6 +27,9 @@ import { env } from 'process';
 import { HttpClientModule, HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import Dexie from 'dexie';
 import { DestinoViaje } from './models/destino-viaje.model';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { from, Observable } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 // init routing
 export const childrenRoutesVuelos: Routes = [
@@ -95,21 +98,71 @@ const reducersInitialState = {
 // redux fin init
 
 // dexie db
+export class Translation {
+  constructor(public id: number, public lang: string, public key: string, public value: string) {}
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class MyDatabase extends Dexie {
   destinos: Dexie.Table<DestinoViaje, number>;
+  translations: Dexie.Table<Translation, number>;
   constructor () {
       super('MyDatabase');
       this.version(1).stores({
+        destinos: '++id, nombre, imagenUrl'
+      });
+      this.version(2).stores({
         destinos: '++id, nombre, imagenUrl',
+        translations: '++id, lang, key, value'
       });
   }
 }
 
 export const db = new MyDatabase();
 // fin dexie db
+
+// i18n ini
+class TranslationLoader implements TranslateLoader {
+  constructor(private http: HttpClient) { }
+
+  getTranslation(lang: string): Observable<any> {
+    const promise = db.translations
+      .where('lang')
+      .equals(lang)
+      .toArray()
+      .then(results => {
+        if (results.length === 0) {
+          return this.http
+          .get<Translation[]>(APP_CONFIG_VALUE.apiEndpoint + '/api/translation?lang=' + lang)
+          .toPromise()
+          .then(apiResults => {
+            db.translations.bulkAdd(apiResults);
+            return apiResults;
+          });
+        }
+        return results;
+      }).then((traducciones) => {
+        console.log('traducciones cargadas:');
+        console.log(traducciones);
+        return traducciones;
+      }).then((traducciones) => {
+        return traducciones.map((t) => ({ [t.key]: t.value}));
+      });
+    /*
+    return from(promise).pipe(
+      map((traducciones) => traducciones.map((t) => { [t.key]: t.value}))
+    );
+    */
+   return from(promise).pipe(flatMap((elems) => from(elems)));
+  }
+}
+
+function HttpLoaderFactory(http: HttpClient) {
+  return new TranslationLoader(http);
+}
+// fin i18n
 
 
 
@@ -136,7 +189,14 @@ export const db = new MyDatabase();
     NgRxStoreModule.forRoot(reducers, { initialState: reducersInitialState }),
     EffectsModule.forRoot([DestinosViajesEffects]),
     StoreDevtoolsModule.instrument(),
-    ReservasModule
+    ReservasModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (HttpLoaderFactory),
+          deps: [HttpClient]
+      }
+  })
   ],
   providers: [
     //DestinosApiClient,

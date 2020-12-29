@@ -31,6 +31,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { from, Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // init routing
 export const childrenRoutesVuelos: Routes = [
@@ -182,7 +183,8 @@ function HttpLoaderFactory(http: HttpClient) {
     VuelosDetalleComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserAnimationsModule,
+    BrowserModule,    
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -199,6 +201,7 @@ function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     NgxMapboxGLModule
+    
   ],
   providers: [
     //DestinosApiClient,

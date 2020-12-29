@@ -4,8 +4,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { DestinoViaje } from './destino-viaje.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DestinosApiClient } from './destinos-api-client.model';
-import { HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+//import { DestinosApiClient } from './destinos-api-client.model';
+//import { HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 
 // ESTADO
 export interface DestinosViajesState {

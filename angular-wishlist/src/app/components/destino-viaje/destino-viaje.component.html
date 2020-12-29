@@ -9,16 +9,16 @@
       <h3>{{destino.nombre}}</h3>
       <p>Servicios</p>
       <div>
-        <a href="#" (click)="voteUp()">
+        <a href="#" (click)="voteUp()" appTrackearClick data-trackear-tags="destino_vote_up lista_destinos_item">
           <i class="material-icons md-18">thumb_up</i>
         </a>
-        <a href="#" (click)="voteDown()">
+         <a href="#" (click)="voteDown()" appTrackearClick data-trackear-tags="destino_vote_down lista_destinos_item">
           <i class="material-icons md-18">thumb_down</i>
         </a>
         <a href="#" (click)="voteReset()">
           <i class="material-icons md-18">undo</i>
         </a>
-        {{destino.votes}}
+        Votos:{{destino.votes}}
       </div>
       <ul>
         <li *ngFor="let s of destino.servicios" >
@@ -28,7 +28,8 @@
         </span>
        </li>
       </ul>      
-      <a href="#" class="btn-card" (click)="ir()">Ir</a>
+      <a href="#" class="btn-card" (click)="ir()" 
+      appTrackearClick data-trackear-tags="destino_elegir_preferido lista_destinos_item">IR!</a>
       <span *ngIf="destinosApiClient.isSelected(destino) | async">
         <span ngNonBindable>{{PREFERIDO}}</span>
       </span>

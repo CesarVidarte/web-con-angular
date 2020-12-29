@@ -30,6 +30,7 @@ import { DestinoViaje } from './models/destino-viaje.model';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { from, Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 // init routing
 export const childrenRoutesVuelos: Routes = [
@@ -196,7 +197,8 @@ function HttpLoaderFactory(http: HttpClient) {
           useFactory: (HttpLoaderFactory),
           deps: [HttpClient]
       }
-  })
+    }),
+    NgxMapboxGLModule
   ],
   providers: [
     //DestinosApiClient,

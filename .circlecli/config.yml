@@ -1,7 +1,7 @@
 version: 2
 	jobs:
 	  build:
-	    working_directory: ~/myapp
+	    working_directory: ~/myapp/angular-wishlist
 	    docker:
 	      - image: circleci/node:8-browsers
 	    steps:

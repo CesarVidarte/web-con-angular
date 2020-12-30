@@ -36,14 +36,14 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-	browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessCI'],
-	customLaunchers: {
-	  ChromeHeadlessCI: {
-	    base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu', '--disable-translate', '--disable-extensions', '--remote-debugging-port=9223']
-    }
-  }
-  
+    browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
+
 	});
   
 };

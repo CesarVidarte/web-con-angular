@@ -14,4 +14,4 @@ jobs:
           key: angular-wishlist-{{ .Branch }}-{{ checksum "angular-wishlist/package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test --prefix angular-wishlist -- --progress=false --watch=false --browsers=ChromeHeadlessCI
+      - run: npm run test -- --progress=false --watch=false --browsers=ChromeHeadlessCI --source-map=false

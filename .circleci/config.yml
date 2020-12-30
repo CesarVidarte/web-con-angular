@@ -1,17 +1,17 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/myapp/angular-wishlist
+    working_directory: ~/web-con-angular
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:12-browsers
     steps:
       - checkout:
-          path: ~/myapp
+            path: ~/web-con-angular
       - restore_cache:
-          key: angular-wishlist-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+          key: angular-wishlist-{{ .Branch }}-{{ checksum "angular-wishlist/package-lock.json" }}
+      - run: npm install --prefix angular-wishlist
       - save_cache:
-          key: angular-wishlist-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: angular-wishlist-{{ .Branch }}-{{ checksum "angular-wishlist/package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test -- --progress=false --watch=false --browsers=ChromeHeadlessCI --source-map=false
+      - run: npm run test --prefix angular-wishlist -- --progress=false --watch=false --browsers=ChromeHeadlessCI
